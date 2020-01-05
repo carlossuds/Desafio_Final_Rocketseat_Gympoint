@@ -1,6 +1,6 @@
 # Projeto de certificação do bootcamp Rocketseat
 
-- Desafio Final 
+- Desafio Final - Gympoint
 
 ## Organização
 
