@@ -10,26 +10,33 @@ import api from '../../services/api';
 import { Container, Top, Content, Back, Save, Specs } from './styles';
 
 const schema = Yup.object().shape({
+  name: Yup.string().required('O nome é obrigatório'),
   title: Yup.string().required('O título é obrigatório'),
-  duration: Yup.number().required('A duração é obrigatória'),
-  price: Yup.number().required('O preço é obrigatório'),
+  startFormat: Yup.string().required('A data é obrigatória'),
 });
 
 export default function RegistrationEdit({ location }) {
   const reg = location.state.reg ? location.state.reg : {};
-  reg.startFormat = format(parseISO(reg.start_date), 'dd/MM/yyyy');
+  reg.startFormat = parseISO(reg.start_date, 'dd/MM/yyyy');
   reg.endFormat = format(parseISO(reg.end_date), 'dd/MM/yyyy');
 
-  console.log(location.state.reg);
+  console.log(typeof reg.startFormat);
+  console.log(typeof reg.endFormat);
 
   async function handleSubmit(data) {
+    console.log(data.startFormat);
     try {
-      await api.put(`/registration/${reg.id}`, data);
+      await api.put(`/registration/${reg.id}`, {
+        name: data.student.name,
+        title: data.plan.title,
+        start_date: parseISO(data.startFormat),
+      });
       toast.success('Dados atualizados!');
     } catch (error) {
       console.log(error);
       toast.error(`Algo deu errado!\nerror:${error}`);
     }
+    console.log('Submeteu');
   }
 
   return (
@@ -47,12 +54,8 @@ export default function RegistrationEdit({ location }) {
       </Top>
 
       <Content>
-        <Form
-          id="form"
-          initialData={reg}
-          schema={schema}
-          onSubmit={handleSubmit}
-        >
+        <Form id="form" initialData={reg} onSubmit={handleSubmit}>
+          {' '}
           <strong>ALUNO</strong>
           <Input name="student.name" type="name" placeholder="Buscar aluno" />
           <Specs>
@@ -68,13 +71,13 @@ export default function RegistrationEdit({ location }) {
               <strong>DATA DE INÍCIO</strong>
               <Input
                 name="startFormat"
-                type="text"
+                type="date"
                 placeholder="Escolha a data"
               />
             </div>
             <div>
               <strong>DATA DE TÉRMINO</strong>
-              <Input name="endFormat" type="text" disabled />
+              <Input name="endFormat" type="date" disabled />
             </div>
             <div>
               <strong>VALOR FINAL</strong>

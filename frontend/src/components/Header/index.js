@@ -32,7 +32,12 @@ export default function Header() {
           <Profile>
             <div>
               <strong>{profile.name}</strong>
-              <Link onClick={handleLogout}>sair do sistema</Link>
+              <button
+                style={{ background: 'none', border: 'none', color: '#ee4d64' }}
+                onClick={handleLogout}
+              >
+                sair do sistema
+              </button>
             </div>
           </Profile>
         </aside>
