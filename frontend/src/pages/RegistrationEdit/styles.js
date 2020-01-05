@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
 
+const disabled = '#dddd';
+const enabled = '#ee4d64';
+
 export const Container = styled.div`
   background: #f2f2f2;
   padding: 0 30px;
@@ -82,7 +85,7 @@ export const Save = styled.button`
   padding: 0 15px;
   height: 36px;
   width: 142px;
-  background: #ee4d64;
+  background: ${props => (props.loading ? disabled : enabled)};
   font-weight: bold;
   color: #fff;
   border: 0;
@@ -90,7 +93,8 @@ export const Save = styled.button`
   font-size: 16px;
   transition: 0.2s;
   &:hover {
-    background: ${darken(0.1, '#ee4d64')};
+    background: ${props =>
+      props.loading ? darken(0.1, disabled) : darken(0.1, enabled)};
   }
 `;
 export const Back = styled.button`

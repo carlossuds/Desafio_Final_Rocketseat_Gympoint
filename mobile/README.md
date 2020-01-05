@@ -26,6 +26,8 @@
 1. Fazer um novo Pedido de Ajuda
 2. Acessar um Pedido de Ajuda já realizado para ler a Resposta
 
+Obs: Não consegui mostrar nas telas #4 e #5 o BottomTabNavigator.
+
 ## 4. 'HelpDetail' - Detalhes do Pedido de Ajuda
 
 - Nessa tela o Aluno tem acesso à Resposta do seu Pedido de Ajuda selecionado

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Form, Input } from '@rocketseat/unform';
@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { parseISO, format } from 'date-fns';
 import { toast } from 'react-toastify';
 import api from '../../services/api';
+import history from '../../services/history';
 
 import { Container, Top, Content, Back, Save, Specs } from './styles';
 
@@ -20,11 +21,11 @@ export default function RegistrationEdit({ location }) {
   reg.startFormat = parseISO(reg.start_date, 'dd/MM/yyyy');
   reg.endFormat = format(parseISO(reg.end_date), 'dd/MM/yyyy');
 
-  console.log(typeof reg.startFormat);
-  console.log(typeof reg.endFormat);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(data) {
     console.log(data.startFormat);
+    setLoading(!loading);
     try {
       await api.put(`/registration/${reg.id}`, {
         name: data.student.name,
@@ -32,6 +33,7 @@ export default function RegistrationEdit({ location }) {
         start_date: parseISO(data.startFormat),
       });
       toast.success('Dados atualizados!');
+      history.push('/matriculas');
     } catch (error) {
       console.log(error);
       toast.error(`Algo deu errado!\nerror:${error}`);
@@ -47,7 +49,7 @@ export default function RegistrationEdit({ location }) {
           <Link to="/matriculas">
             <Back type="button">VOLTAR</Back>
           </Link>
-          <Save type="submit" form="form">
+          <Save loading={loading} disabled={loading} type="submit" form="form">
             SALVAR
           </Save>
         </aside>
@@ -77,7 +79,7 @@ export default function RegistrationEdit({ location }) {
             </div>
             <div>
               <strong>DATA DE TÉRMINO</strong>
-              <Input name="endFormat" type="date" disabled />
+              <Input name="endFormat" type="text" disabled />
             </div>
             <div>
               <strong>VALOR FINAL</strong>

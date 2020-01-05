@@ -57,9 +57,10 @@
 
 - Nessa tela eu me atrapalhei demais com os componentes do React-Select dentro do unform e não consegui deixar a tela funcional. Essa tela tem apenas a aparência.
 
-## 10. 'RegistrationEdit' - Lista de alunos cadastrados
+## 10. 'RegistrationEdit' - Lista de Matrículas cadastradas
 
 - A tela inicializa com os dados da Matrícula previamente selecionada na tela de listagem
+- Obs: Nessa tela o campo de Data de início não recebe os dados por ser do tipo date e não text, e é obrigatório para o envio correto do formulário.
 
 ## 11. 'HelpOrders' - Lista de Pedidos de Auxílio
 
