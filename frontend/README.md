@@ -40,7 +40,7 @@
 - O usuário pode optar por :
 1. cadastrar uma nova Matrículas; 
 2. editar os dados ou;
-3. apagar alguma Matrículas já existente (apenas SE nenhum Aluno estiver matriculado nela)
+3. apagar alguma Matrículas já existente (apenas SE a Matrícula estiver inativa)
 
 ## 9. 'RegistrationCreate' - Cadastro de Matrícula
 - Nessa tela eu me atrapalhei demais com os componentes do React-Select dentro do unform e não consegui deixar a tela funcional. Essa tela tem apenas a aparência.
