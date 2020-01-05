@@ -4,7 +4,7 @@
 
 ## Organização
 
-1. Backend em NodeJS [README](./backend/README.md)
-2. Frontend em ReactJS [README](./frontend/README.md)
-3. Mobile (Android) em React-Native [README](./mobile/README.md)
+1. Backend em Node.js [README](./backend/README.md)
+2. Frontend em React [README](./frontend/README.md)
+3. Mobile (Android) em React Native [README](./mobile/README.md)
 
