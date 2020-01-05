@@ -15,3 +15,5 @@
 <p align="center">
   <img height="100" src="./fullstack.png">
 </p>
+
+- Agradecimento mais do que especial a [@mourabraz](https://github.com/mourabraz) que me ajudou DEMAIS nesse projeto tirando várias e várias dúvidas que me deixaram travado por muuuuitas horas sem sair do lugar. Sem ele com certeza eu não teria conseguido.
