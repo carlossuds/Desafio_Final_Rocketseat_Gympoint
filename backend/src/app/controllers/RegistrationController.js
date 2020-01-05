@@ -26,7 +26,7 @@ class RegistrationController {
     });
 
     if (regExists) {
-      res.status(400).json({ error: 'Registration already exists' });
+      return res.status(400).json({ error: 'Registration already exists' });
     }
 
     const { duration, price, title } = await Plan.findByPk(req.body.plan_id);
@@ -102,16 +102,34 @@ class RegistrationController {
       ],
     });
 
-    reg.update({
-      ...req.body,
-      end_date: addMonths(parseISO(req.body.start_date), reg.plan.duration),
-      price: reg.plan.price * reg.plan.duration,
+    const student = await Student.findOne({
+      where: { name: req.body.name },
+    });
+
+    if (!student) {
+      return res.status(401).json('User does not exist');
+    }
+
+    const plan = await Plan.findOne({
+      where: { title: req.body.title },
+    });
+
+    if (!plan) {
+      return res.status(401).json('Plan does not exist');
+    }
+
+    await reg.update({
+      student_id: student.id,
+      plan_id: plan.id,
+      start_date: req.body.start_date,
+      end_date: addMonths(parseISO(req.body.start_date), plan.duration),
+      price: plan.price * plan.duration,
     });
 
     await Mail.sendMail({
-      to: `${reg.student.name} <${reg.student.email}>`,
+      to: `${student.name} <${student.email}>`,
       subject: 'Matrícula Atualizada!',
-      text: `${reg.student.name}, sua matrícula foi alterada. Plano: ${reg.plan.title}(${reg.plan.price}$/mês) Duração:${reg.plan.duration} meses.`,
+      text: `${student.name}, sua matrícula foi alterada. Plano: ${plan.title}(${plan.price}$/mês) Duração:${plan.duration} meses.`,
     });
 
     return res.json(reg);
@@ -124,11 +142,13 @@ class RegistrationController {
       return res.status(404).json({ error: 'Registration not found' });
     }
 
-    const { name, email } = await Student.findByPk(reg.student_id);
-
-    if (!name) {
-      return res.status(404).json({ error: 'Student not found' });
+    if (reg.active) {
+      return res
+        .status(404)
+        .json({ error: 'Registration Active, cant delete' });
     }
+
+    const { name, email } = await Student.findByPk(reg.student_id);
 
     await reg.destroy();
 
