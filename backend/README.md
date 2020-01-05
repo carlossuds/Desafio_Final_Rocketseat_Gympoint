@@ -1,3 +1,3 @@
-DESAFIO FINAL
+#BACKEND DO DESAFIO FINAL
 
-Backend do Gympoint desenvolvido em Node.js
+Desenvolvido em Node.js
