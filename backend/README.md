@@ -1,3 +1,5 @@
-#BACKEND DO DESAFIO FINAL
+# Backend do Desafio Final
 
-Desenvolvido em Node.js
+- Desenvolvido em Node.js
+
+Banco de dados utilizado: Postgresql
