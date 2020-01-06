@@ -55,7 +55,7 @@
 
 ## 9. 'RegistrationCreate' - Cadastro de Matrícula
 
-- Nessa tela eu me atrapalhei demais com os componentes do React-Select dentro do unform e não consegui deixar a tela funcional. Essa tela tem apenas a aparência.
+- Nessa tela eu me atrapalhei demais com os componentes do React-Select dentro do unform e por isso talvez tenha ficado bastante bagunçado o código.
 
 ## 10. 'RegistrationEdit' - Lista de Matrículas cadastradas
 

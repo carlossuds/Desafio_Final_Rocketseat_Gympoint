@@ -5,20 +5,21 @@ import { Form, Input } from '@rocketseat/unform';
 import AsyncSelect from 'react-select/async';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
-import { format } from 'date-fns';
+import { addMonths, format } from 'date-fns';
 import api from '../../services/api';
+import history from '../../services/history';
 import { Container, Top, Content, Back, Save, Specs } from './styles';
 
-const schema = Yup.object().shape({
+/*const schema = Yup.object().shape({
   name: Yup.string().required('O nome é obrigatório'),
   title: Yup.string().required('O título é obrigatório'),
   start_date: Yup.date().required('A data é obrigatória'),
-});
+});*/
 
 const filter = async inputValue => {
   const response = await api.get('students');
   const students = [];
-  response.data.map(r => students.push({ value: r.name, label: r.name }));
+  response.data.map(r => students.push({ value: r.id, label: r.name }));
   return students.filter(i =>
     i.label.toLowerCase().includes(inputValue.toLowerCase()),
   );
@@ -33,6 +34,11 @@ const promiseOptions = inputValue =>
 
 export default function RegistrationCreate() {
   const [plans, setPlans] = useState([]);
+
+  const [selectedStudentId, setSelectedStudentId] = useState('');
+  const [selectedPlanId, setSelectedPlanId] = useState('');
+
+  const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
@@ -56,16 +62,31 @@ export default function RegistrationCreate() {
     loadPlans();
   }, []);
 
-  async function handleSubmit() {
+  async function handleClick(student_id, plan_id, start_date) {
+    console.log(student_id, plan_id, start_date);
     try {
-      console.tron.log();
-      toast.success('Matrícula cadastrada com sucesso!');
-      // history.push('/matriculas');
-    } catch (err) {
-      toast.error(`Algo deu errado: ${err}`);
-      console.log(err);
+      await api.post('registration', { student_id, plan_id, start_date });
+      toast.success('Matrícula criada com sucesso');
+      history.push('/matriculas');
+    } catch (error) {
+      toast.error('Ops! Ocorreu um erro');
     }
   }
+
+  function handleSubmit(data) {
+    handleClick(selectedStudentId, selectedPlanId, data.start_date);
+  }
+
+  function handleSelectPlan(selectedOption) {
+    setSelectedPlanId(selectedOption.value);
+    console.log(selectedPlanId);
+  }
+
+  function handleSelectStudent(selectedOption) {
+    setSelectedStudentId(selectedOption.value);
+    console.log(selectedStudentId);
+  }
+
   const titles = [];
   plans.map(p => titles.push({ value: p.id, label: p.title }));
 
@@ -77,19 +98,20 @@ export default function RegistrationCreate() {
           <Link to="/alunos">
             <Back type="button">VOLTAR</Back>
           </Link>
-          <Save type="button" onClick={handleSubmit}>
+          <Save type="submit" form="form">
             SALVAR
           </Save>
         </aside>
       </Top>
 
       <Content>
-        <Form id="form" schema={schema}>
+        <Form id="form" onSubmit={handleSubmit}>
           <strong>ALUNO</strong>
           <AsyncSelect
             id="name"
             name="name"
             placeholder="Buscar usuário"
+            onChange={handleSelectStudent}
             cacheOptions
             defaultOptions
             loadOptions={promiseOptions}
@@ -99,6 +121,7 @@ export default function RegistrationCreate() {
               <strong>PLANO</strong>
               <Select
                 id="title"
+                onChange={handleSelectPlan}
                 name="title"
                 placeholder="Selecione o plano"
                 options={titles}
@@ -106,13 +129,7 @@ export default function RegistrationCreate() {
             </div>
             <div>
               <strong>DATA DE INÍCIO</strong>
-              <Input
-                id="start"
-                value={format(new Date(), 'dd/MM/yyyy')}
-                onChange={() => {}}
-                name="start_date"
-                type="text"
-              />
+              <Input id="start" name="start_date" type="date" />
             </div>
             <div>
               <strong>DATA DE TÉRMINO</strong>
