@@ -34,12 +34,11 @@ const promiseOptions = inputValue =>
 
 export default function RegistrationCreate() {
   const [plans, setPlans] = useState([]);
-
   const [selectedStudentId, setSelectedStudentId] = useState('');
   const [selectedPlanId, setSelectedPlanId] = useState('');
-
-  const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [price, setPrice] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadPlans() {
@@ -62,8 +61,13 @@ export default function RegistrationCreate() {
     loadPlans();
   }, []);
 
+  useEffect(() => {
+    plans.map(p => (p.id === selectedPlanId ? setPrice(p.total) : null));
+  }, [selectedPlanId]);
+
   async function handleClick(student_id, plan_id, start_date) {
     console.log(student_id, plan_id, start_date);
+    setLoading(!loading);
     try {
       await api.post('registration', { student_id, plan_id, start_date });
       toast.success('Matrícula criada com sucesso');
@@ -84,7 +88,7 @@ export default function RegistrationCreate() {
 
   function handleSelectStudent(selectedOption) {
     setSelectedStudentId(selectedOption.value);
-    console.log(selectedStudentId);
+    console.log(selectedStudentId, plans);
   }
 
   const titles = [];
@@ -98,7 +102,7 @@ export default function RegistrationCreate() {
           <Link to="/alunos">
             <Back type="button">VOLTAR</Back>
           </Link>
-          <Save type="submit" form="form">
+          <Save type="submit" loading={loading} disabled={loading} form="form">
             SALVAR
           </Save>
         </aside>
@@ -143,7 +147,7 @@ export default function RegistrationCreate() {
             </div>
             <div>
               <strong>VALOR FINAL</strong>
-              <Input name="total" type="text" disabled />
+              <Input name="total" value={price} type="text" disabled />
             </div>
           </Specs>
         </Form>
