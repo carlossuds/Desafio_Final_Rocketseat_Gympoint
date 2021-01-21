@@ -16,7 +16,7 @@
     "babel-eslint": "^10.0.3",
     "babel-plugin-root-import": "^6.4.1",
     "date-fns": "^2.8.1",
-    "immer": "^5.1.0",
+    "immer": "^8.0.1",
     "polished": "^3.4.2",
     "prop-types": "^15.7.2",
     "react": "16.9.0",
